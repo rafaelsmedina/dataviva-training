@@ -1,0 +1,4 @@
+venv/
+.dotenv
+.flaskenv
+__pycache__
