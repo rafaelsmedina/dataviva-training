@@ -11,3 +11,11 @@ def profile():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+"""    
+@app.route('/edit_profile', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+	form = EditProfileForm(current_user.username)
+    # ...
+    """
