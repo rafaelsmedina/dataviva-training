@@ -1,4 +1,6 @@
 venv/
+migrations/
+__pycache__
 .dotenv
 .flaskenv
-__pycache__
+.db
