@@ -1,13 +1,12 @@
-from app import app
-from flask import render_template, request
+from app import app, db
+from flask import render_template, request, flash, redirect, url_for
 from app.modules.models import User
-from flask import render_template
-from app.forms import LoginForm
+from app.forms import LoginForm, EditProfileForm, RegistrationForm
 from werkzeug.urls import url_parse
 from flask_login import current_user, login_user, logout_user, login_required
-from flask import render_template, flash, redirect, url_for
-from app import db
-from app.forms import RegistrationForm
+from datetime import datetime
+
+
 
 @app.route('/')
 @app.route('/home')
@@ -15,10 +14,15 @@ from app.forms import RegistrationForm
 def home():
     return render_template('base/base.html')
 
-@app.route('/profile')
+@app.route('/user/<username>')
 @login_required
-def profile():
-    return render_template('profile/profile.html')
+def user(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    posts = [
+        {'author': user, 'body': 'Test post #1'},
+        {'author': user, 'body': 'Test post #2'}
+    ]
+    return render_template('user/user.html', user=user, posts=posts)
 
 if __name__ == '__main__':
     app.run(debug=True)
@@ -67,6 +71,29 @@ def login():
         
     return render_template('login/login.html', title='Sign In', form=form)
 
+
+@app.before_request
+def before_request():
+    if current_user.is_authenticated:
+        current_user.last_seen = datetime.utcnow()
+        db.session.commit()
+
+
+@app.route('/edit_profile', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        current_user.about_me = form.about_me.data
+        db.session.commit()
+        flash('Your changes have been saved.')
+        return redirect(url_for('edit_profile'))
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        form.about_me.data = current_user.about_me
+    return render_template('edit_profile/edit_profile.html', title='Edit Profile',
+                           form=form)
 @app.route('/logout')
 def logout():
     logout_user()
