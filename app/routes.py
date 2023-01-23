@@ -22,7 +22,7 @@ def user(username):
         {'author': user, 'body': 'Test post #1'},
         {'author': user, 'body': 'Test post #2'}
     ]
-    return render_template('user.html', user=user, posts=posts)
+    return render_template('user/user.html', user=user, posts=posts)
 
 if __name__ == '__main__':
     app.run(debug=True)
@@ -92,7 +92,7 @@ def edit_profile():
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.about_me.data = current_user.about_me
-    return render_template('edit_profile.html', title='Edit Profile',
+    return render_template('edit_profile/edit_profile.html', title='Edit Profile',
                            form=form)
 @app.route('/logout')
 def logout():
