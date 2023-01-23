@@ -1,4 +1,6 @@
 from app import app
+from flask import render_template, request
+from app.modules.models import User
 from flask import render_template
 from app.forms import LoginForm
 from flask import render_template, flash, redirect, url_for
@@ -8,6 +10,7 @@ from app.forms import EditProfileForm
 @app.route('/')
 @app.route('/home')
 def home():
+    user = User.query.filter_by(username="john").first()
     return render_template('base/base.html')
 
 @app.route('/user/<username>')
@@ -22,8 +25,8 @@ def user(username):
 
 if __name__ == '__main__':
     app.run(debug=True)
-
 @app.route('/login', methods=['GET', 'POST'])
+
 def login():
     form = LoginForm()
     if form.validate_on_submit():
