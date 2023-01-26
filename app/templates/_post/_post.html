@@ -6,13 +6,9 @@
             </a>
         </td>
         
-        <td>{{ post.author.username }} says:<br>said{{moment(post.timestamp).fromNow()}}<br>
-
-            <a href="{{ url_for('user', username=post.author.username) }}">
-                {{ post.author.username }}
-            </a>
-            said {{ moment(post.timestamp).fromNow() }}:
-            <br>
+        <td> <a href="{{ url_for('user', username=post.author.username) }}">{{ post.author.username }}</a> 
+            
+            disse:<br> {{moment(post.timestamp).fromNow()}}<br>
 
             {{ post.body }}
         </td>
