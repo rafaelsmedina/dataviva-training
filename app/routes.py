@@ -15,7 +15,7 @@ def home():
         post = Post(body=form.post.data, author=current_user)
         db.session.add(post)
         db.session.commit()
-        flash('Your post is now live!')
+        flash('Seu post foi publicado!')
         return redirect(url_for('home'))
     
     page = request.args.get('page', 1, type=int)
@@ -59,7 +59,7 @@ def register():
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash('Congratulations, you are now a registered user!')
+        flash('Parabéns, você foi cadastrado com sucesso!')
         return redirect(url_for('login'))
 
     return render_template('register/register.html', title='Register', form=form)
@@ -75,7 +75,7 @@ def login():
         user = User.query.filter_by(username=form.username.data).first()
 
         if user is None or not user.check_password(form.password.data):
-            flash('Invalid username or password')
+            flash('Nome de usuário ou senha inválidos!')
             return redirect(url_for('login'))
 
         login_user(user, remember=form.remember_me.data)
@@ -87,7 +87,7 @@ def login():
 
         return redirect(next_page)
         
-    return render_template('login/login.html', title='Sign In', form=form)
+    return render_template('login/login.html', title='Entrar', form=form)
 
 
 @app.before_request
@@ -105,12 +105,12 @@ def edit_profile():
         current_user.username = form.username.data
         current_user.about_me = form.about_me.data
         db.session.commit()
-        flash('Your changes have been saved.')
+        flash('Suas mudanças foram salvas.')
         return redirect(url_for('edit_profile'))
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.about_me.data = current_user.about_me
-    return render_template('edit_profile/edit_profile.html', title='Edit Profile',
+    return render_template('edit_profile/edit_profile.html', title='Editar Perfil',
                            form=form)
 @app.route('/logout')
 def logout():
@@ -124,14 +124,14 @@ def follow(username):
     if form.validate_on_submit():
         user = User.query.filter_by(username=username).first()
         if user is None:
-            flash('User {} not found.'.format(username))
+            flash('Usuário {} não foi encontrado.'.format(username))
             return redirect(url_for('home'))
         if user == current_user:
-            flash('You cannot follow yourself!')
+            flash('Você não pode parar de seguir você mesmo!')
             return redirect(url_for('user', username=username))
         current_user.follow(user)
         db.session.commit()
-        flash('You are following {}!'.format(username))
+        flash('Você está seguindo {}!'.format(username))
         return redirect(url_for('user', username=username))
     else:
         return redirect(url_for('home'))
@@ -143,14 +143,14 @@ def unfollow(username):
     if form.validate_on_submit():
         user = User.query.filter_by(username=username).first()
         if user is None:
-            flash('User {} not found.'.format(username))
+            flash('Usuário {} não foi encontrado.'.format(username))
             return redirect(url_for('home'))
         if user == current_user:
-            flash('You cannot unfollow yourself!')
+            flash('Você não pode parar de seguir você mesmo!')
             return redirect(url_for('user', username=username))
         current_user.unfollow(user)
         db.session.commit()
-        flash('You are not following {}.'.format(username))
+        flash('Você não está seguindo {}!'.format(username))
         return redirect(url_for('user', username=username))
     else:
         return redirect(url_for('home'))
