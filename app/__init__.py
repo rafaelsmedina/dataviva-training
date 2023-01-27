@@ -1,6 +1,7 @@
 import os
 import logging
-from flask import Flask
+from flask import Flask, request
+from flask_babel import Babel
 from app.config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -9,6 +10,7 @@ from flask_login import LoginManager
 from flask_moment import Moment
 from flask_bootstrap import Bootstrap
 from elasticsearch import Elasticsearch
+from flask_babel import lazy_gettext as _l
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -18,6 +20,7 @@ moment = Moment(app)
 
 login = LoginManager(app)
 login.login_view = 'login'
+login.login_message = _l('Você precisa estar logado para acessar esta página.')
 
 if not app.debug:
     if not os.path.exists('logs'):
@@ -41,3 +44,9 @@ def create_app(config_class=Config):
 
     app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) \
         if app.config['ELASTICSEARCH_URL'] else None
+        
+babel = Babel(app)
+
+@babel.localeselector
+def get_locale():
+    return request.accept_languages.best_match(app.config['LANGUAGES'])
