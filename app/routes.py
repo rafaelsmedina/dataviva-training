@@ -1,10 +1,11 @@
 from app import app, db
-from flask import render_template, request, flash, redirect, url_for
+from flask import render_template, request, flash, redirect, url_for, g
 from app.modules.models import User, Post
 from app.forms import LoginForm, EditProfileForm, RegistrationForm, EmptyForm, PostForm
 from werkzeug.urls import url_parse
 from flask_login import current_user, login_user, logout_user, login_required
 from datetime import datetime
+from flask_babel import get_locale
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])
@@ -89,12 +90,12 @@ def login():
         
     return render_template('login/login.html', title='Entrar', form=form)
 
-
 @app.before_request
 def before_request():
     if current_user.is_authenticated:
         current_user.last_seen = datetime.utcnow()
         db.session.commit()
+        g.locale = str(get_locale())
 
 
 @app.route('/edit_profile', methods=['GET', 'POST'])
