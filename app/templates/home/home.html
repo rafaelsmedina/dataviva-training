@@ -2,37 +2,55 @@
 {% extends "base/base.html" %}
 
 {% block app_content %}
-    <h1>Olá, {{ current_user.username }}!</h1>
-    {% if form %}
-    <form action="" method="post">
-        {{ form.hidden_tag() }}
-        <p>
-            {{ form.post.label }}<br>
-            {{ form.post(cols=32, rows=4) }}<br>
-            {% for error in form.post.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>{{ form.submit() }}</p>
-    </form>
-    {% endif %}
-    {% for post in posts %}
-        {% include '_post/_post.html' %}
-    {% endfor %}
+<div style="display: flex">
+    <div class="row container">
+        <div class="col-sm-6 col-md-3">
+            <div class="thumbnail">
+                <img src="https://api.adorable.io/avatars/400/b07ad104cefbf44ec640bfa7b0a9641e.png" alt="avatar"
+                    style="width: 60%;">
+                <div class="caption">
+                    <h5>Olá, {{ current_user.about_me }}</h5>
+                    <p>...</p>
+                    <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default"
+                            role="button">Button</a></p>
+                </div>
+            </div>
+        </div>
 
-    <nav aria-label="...">
-        <ul class="pager">
-            <li class="previous{% if not prev_url %} disabled{% endif %}">
-                <a href="{{ prev_url or '#' }}">
-                    <span aria-hidden="true">&larr;</span> Novos posts
-                </a>
-            </li>
-            <li class="next{% if not next_url %} disabled{% endif %}">
-                <a href="{{ next_url or '#' }}">
-                    Posts antigos <span aria-hidden="true">&rarr;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-    
+        <div class="col-sm-6 col-md-9">
+            {% if form %}
+            <form action="" method="post">
+                {{ form.hidden_tag() }}
+                <p>
+                    {{ form.post.label }}<br>
+                    {{ form.post(cols=32, rows=4) }}<br>
+                    {% for error in form.post.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </p>
+                <p>{{ form.submit() }}</p>
+            </form>
+            {% endif %}
+            {% for post in posts %}
+            {% include '_post/_post.html' %}
+            {% endfor %}
+
+            <nav aria-label="...">
+                <ul class="pager">
+                    <li class="previous{% if not prev_url %} disabled{% endif %}">
+                        <a href="{{ prev_url or '#' }}">
+                            <span aria-hidden="true">&larr;</span> Novos posts
+                        </a>
+                    </li>
+                    <li class="next{% if not next_url %} disabled{% endif %}">
+                        <a href="{{ next_url or '#' }}">
+                            Posts antigos <span aria-hidden="true">&rarr;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
