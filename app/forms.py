@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
-from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, DataRequired, Length
+from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length
 from app.modules.models import User
 
 class EmptyForm(FlaskForm):
@@ -25,7 +25,7 @@ class EditProfileForm(FlaskForm):
         if username.data != self.original_username:
             user = User.query.filter_by(username=self.username.data).first()
             if user is not None:
-                raise ValidationError('Please use a different username.')
+                raise ValidationError('Por favor use um nome de usuário diferente.')
     
 class RegistrationForm(FlaskForm):
     username = StringField('Nome de usuário', validators=[DataRequired()])
