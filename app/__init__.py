@@ -14,13 +14,22 @@ from flask_babel import lazy_gettext as _l
 
 app = Flask(__name__)
 app.config.from_object(Config)
+app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) \
+    if app.config['ELASTICSEARCH_URL'] else None
+
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 moment = Moment(app)
+bootstrap = Bootstrap(app)
 
 login = LoginManager(app)
 login.login_view = 'login'
 login.login_message = _l('Você precisa estar logado para acessar esta página.')
+
+babel = Babel(app)
+@babel.localeselector
+def get_locale():
+    return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 if not app.debug:
     if not os.path.exists('logs'):
@@ -36,17 +45,9 @@ if not app.debug:
 from app import routes, errors
 from app.modules import models
 
-bootstrap = Bootstrap(app)
+# def create_app(config_class=Config):
+#     app = Flask(__name__)
+#     app.config.from_object(config_class)
 
-def create_app(config_class=Config):
-    app = Flask(__name__)
-    app.config.from_object(config_class)
-
-    app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) \
-        if app.config['ELASTICSEARCH_URL'] else None
-        
-babel = Babel(app)
-
-@babel.localeselector
-def get_locale():
-    return request.accept_languages.best_match(app.config['LANGUAGES'])
+#     app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) \
+#         if app.config['ELASTICSEARCH_URL'] else None
