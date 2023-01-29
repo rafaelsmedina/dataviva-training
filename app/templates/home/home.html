@@ -6,11 +6,10 @@
     <div class="row container">
         <div class="col-sm-6 col-md-3">
             <div class="thumbnail">
-                <img src="https://api.adorable.io/avatars/400/b07ad104cefbf44ec640bfa7b0a9641e.png" alt="avatar"
-                    style="width: 60%;">
+                <img src={{ current_user.avatar(120) }} alt="avatar" class="img-circle img-responsive">
                 <div class="caption">
-                    <h5>Olá, {{ current_user.about_me }}</h5>
-                    <p>...</p>
+                    <h5>Olá, {{ current_user.username }}</h5>
+                    <p>{{ current_user.about_me }}</p>
                     <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default"
                             role="button">Button</a></p>
                 </div>
@@ -22,8 +21,7 @@
             <form action="" method="post">
                 {{ form.hidden_tag() }}
                 <p>
-                    {{ form.post.label }}<br>
-                    {{ form.post(cols=32, rows=4) }}<br>
+                    {{ form.post(cols=32, rows=4, placeholder="Como você está?") }}<br>
                     {% for error in form.post.errors %}
                     <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
