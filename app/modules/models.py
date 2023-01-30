@@ -31,8 +31,7 @@ class User(UserMixin, db.Model):
 
     def avatar(self, size):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
-        return 'https://robohash.org/{}?set=set4&bgset=&size={}'.format(digest, "{}x{}".format(size, size))
-
+        return 'https://robohash.org/{}?set=set4&bgset=&size={}'.format(digest, "{}x{}").format(size, size)
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
@@ -61,12 +60,13 @@ class User(UserMixin, db.Model):
                 followers.c.follower_id == self.id)
         own = Post.query.filter_by(user_id=self.id)
         return followed.union(own).order_by(Post.timestamp.desc())
-    
+
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime, index=True, default=date.today())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    __searchable__ = ['body']
 
     def __repr__(self):
         return '<Post {}>'.format(self.body)

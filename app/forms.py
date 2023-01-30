@@ -4,7 +4,8 @@ from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Da
 from app.modules.models import User
 from markupsafe import Markup, escape
 from wtforms.widgets.core import html_params
-
+from flask import request
+from flask_babel import lazy_gettext as _l
 
 class EmptyForm(FlaskForm):
     submit = SubmitField('Enviar')
@@ -88,3 +89,13 @@ class PostForm(FlaskForm):
     text = Markup('<i class="fas fa-sign-in-alt"></i> Publicar')
     submit = SubmitField(
         text, widget=InlineButtonWidget(class_="btn btn-info"))
+
+class SearchForm(FlaskForm):
+    q = StringField(_l('Search'), validators=[DataRequired()])
+
+    def init(self, args, **kwargs):
+        if 'formdata' not in kwargs:
+            kwargs['formdata'] = request.args
+        if 'meta' not in kwargs:
+            kwargs['meta'] = {'csrf': False}
+        super(SearchForm, self).init(args, **kwargs)
