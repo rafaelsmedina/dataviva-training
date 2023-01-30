@@ -36,7 +36,14 @@
             </form>
             {% endif %}
             {% for post in posts %}
-            {% include '_post/_post.html' %}
+                {% include '_post/_post.html' %}
+            {% endfor %}
+
+            <div>
+                <h4>Usuários encontrados: </h4>
+            </div>
+            {% for user in search_users %}
+                {% include 'userCard/userCard.html' %}
             {% endfor %}
 
             <nav aria-label="...">

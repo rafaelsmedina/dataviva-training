@@ -91,11 +91,11 @@ class PostForm(FlaskForm):
         text, widget=InlineButtonWidget(class_="btn btn-info"))
 
 class SearchForm(FlaskForm):
-    q = StringField(_l('Search'), validators=[DataRequired()])
+    q = StringField(_l('Pesquisar'), validators=[DataRequired()])
 
-    def init(self, args, **kwargs):
+    def __init__(self, *args, **kwargs):
         if 'formdata' not in kwargs:
             kwargs['formdata'] = request.args
         if 'meta' not in kwargs:
             kwargs['meta'] = {'csrf': False}
-        super(SearchForm, self).init(args, **kwargs)
+        super(SearchForm, self).__init__(*args, **kwargs)
