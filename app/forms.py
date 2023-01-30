@@ -85,6 +85,6 @@ class PostForm(FlaskForm):
     style = {'style': 'width:100%; padding: 8px; resize: none;'}
     post = TextAreaField(validators=[
         DataRequired(), Length(min=1, max=140)], render_kw=style, label="O que que pega?")
-    text = Markup('<i class="fas fa-sign-in-alt"></i> Enviar')
+    text = Markup('<i class="fas fa-sign-in-alt"></i> Publicar')
     submit = SubmitField(
         text, widget=InlineButtonWidget(class_="btn btn-info"))
