@@ -20,6 +20,17 @@
         {% include '_post/_post.html' %}
     {% endfor %}
 
+    {% for user in search_users %}
+        <div>
+            <a href="{{ url_for('user', username=user.username) }}">
+                <h6>{{user.username}}</h6>
+            </a>
+            {% if user.about_me %}
+                <p>{{user.about_me}}</p> 
+            {% endif %}
+        </div>
+    {% endfor %}
+
     <nav aria-label="...">
         <ul class="pager">
             <li class="previous{% if not prev_url %} disabled{% endif %}">

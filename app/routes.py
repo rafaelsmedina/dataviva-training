@@ -180,14 +180,21 @@ def before_request():
 @app.route('/search')
 @login_required
 def search():
-    if not g.search_form.validate():
-        return redirect(url_for('explore'))
+    # if not g.search_form.validate():
+    #     return redirect(url_for('explore'))
+    # page = request.args.get('page', 1, type=int)
+    # posts, total = Post.search(g.search_form.q.data, page,
+    #                            app.config['POSTS_PER_PAGE'])
+    # next_url = url_for('search', q=g.search_form.q.data, page=page + 1) \
+    #     if total > page * app.config['POSTS_PER_PAGE'] else None
+    # prev_url = url_for('search', q=g.search_form.q.data, page=page - 1) \
+    #     if page > 1 else None
     page = request.args.get('page', 1, type=int)
-    posts, total = Post.search(g.search_form.q.data, page,
-                               app.config['POSTS_PER_PAGE'])
-    next_url = url_for('search', q=g.search_form.q.data, page=page + 1) \
-        if total > page * app.config['POSTS_PER_PAGE'] else None
-    prev_url = url_for('search', q=g.search_form.q.data, page=page - 1) \
-        if page > 1 else None
-    return render_template('search/search.html', title='Search', posts=posts,
-                           next_url=next_url, prev_url=prev_url)
+    users = User.query.filter(User.username.contains(g.search_form.q.data))
+    posts = Post.query.filter(Post.body.contains(g.search_form.q.data)).order_by(Post.timestamp.desc()).paginate(
+        page=page, per_page=app.config['POSTS_PER_PAGE'], error_out=False)
+    next_url = url_for('explore', page=posts.next_num) \
+        if posts.has_next else None
+    prev_url = url_for('explore', page=posts.prev_num) \
+        if posts.has_prev else None
+    return render_template("home/home.html", title='Explore', posts=posts.items, next_url=next_url, prev_url=prev_url, search_users=users)
