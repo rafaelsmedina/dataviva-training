@@ -1,10 +1,10 @@
 from app import db
 from app import login
-from datetime import date
+from datetime import datetime
 from hashlib import md5
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-from app.modules.search import add_to_index, remove_from_index, query_index
+from app.modules.search import add_to_index, query_index
 
 @login.user_loader
 def load_user(id): 
@@ -21,7 +21,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     about_me = db.Column(db.String(140))
-    last_seen = db.Column(db.DateTime, default=date.today())
+    last_seen = db.Column(db.DateTime, default=datetime.utcnow())
     posts = db.relationship('Post', backref='author', lazy='dynamic')
 
     followed = db.relationship(
@@ -95,7 +95,7 @@ class SearchableMixin(object):
 class Post(SearchableMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(140))
-    timestamp = db.Column(db.DateTime, index=True, default=date.today())
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     __searchable__ = ['body']
 
