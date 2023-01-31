@@ -1,7 +1,7 @@
 from app import app, db
 from flask import render_template, request, flash, redirect, url_for, g
 from app.modules.models import User, Post
-from app.forms import LoginForm, EditProfileForm, RegistrationForm, EmptyForm, PostForm, SearchForm
+from app.modules.forms import LoginForm, EditProfileForm, RegistrationForm, EmptyForm, PostForm, SearchForm
 from werkzeug.urls import url_parse
 from flask_login import current_user, login_user, logout_user, login_required
 from datetime import datetime
