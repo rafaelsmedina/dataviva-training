@@ -4,7 +4,7 @@ from datetime import date
 from hashlib import md5
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-from app.search import add_to_index, remove_from_index, query_index
+from app.modules.search import add_to_index, remove_from_index, query_index
 
 @login.user_loader
 def load_user(id): 
