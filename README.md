@@ -11,18 +11,18 @@ um ambiente virtual ("venv") que possibilita a execução desses. Para utilizá-
 
 1.  Inicialmente, deve-se clonar este repositório
 
-    git clone https://github.com/rafaelsmedina/dataviva-training.git
+    <pre><code>git clone https://github.com/rafaelsmedina/dataviva-training.git</code></pre>
 2.  Definindo a utilização do ambiente virtual e coloca seu nome como "venv"
 
-    python -m venv venv
+    <pre><code>python -m venv venv</code></pre>
 3.  Ativando o venv na sua máquina
 
-    venv\Scripts\activate
-    source venv/bin/activate
+    <pre><code>venv\Scripts\activate</code></pre>
+    <pre><code>source venv/bin/activate</code></pre>
 4.  Instalando todos os requisitos/extensões utilizadas para rodar a aplicação
 
-    pip install -r requirements.txt
+    <pre><code>pip install -r requirements.txt</code></pre>
 5.  Rodando o código fonte para possibilitar a visualização do site
 
-    flask run
+    <pre><code>flask run</code></pre>
 ## Organização das Pastas
