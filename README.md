@@ -26,3 +26,9 @@ um ambiente virtual ("venv") que possibilita a execução desses. Para utilizá-
 
     <pre><code>flask run</code></pre>
 ## Organização das Pastas
+
+
+## Desenvolvedores
+
+Este projeto foi realizado por João Vitor Otoni, Kayque Siqueira, Marcos Pantuza, Rubens Castro e Samuel Santos como projeto inicial de
+nivelamento do time de desenvolvimento de 2023 do site "Dataviva".
