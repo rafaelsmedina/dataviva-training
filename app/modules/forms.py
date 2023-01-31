@@ -11,13 +11,11 @@ from flask_babel import lazy_gettext as _l
 class EmptyForm(FlaskForm):
     submit = SubmitField('Enviar')
 
-
 class LoginForm(FlaskForm):
     username = StringField('Nome de usuário', validators=[DataRequired()])
     password = PasswordField('Senha', validators=[DataRequired()])
     remember_me = BooleanField('Lembrar de mim')
     submit = SubmitField('Entrar')
-
 
 class EditProfileForm(FlaskForm):
     username = StringField('Nome de usuário', validators=[DataRequired()])
@@ -32,8 +30,7 @@ class EditProfileForm(FlaskForm):
         if username.data != self.original_username:
             user = User.query.filter_by(username=self.username.data).first()
             if user is not None:
-                raise ValidationError('Please use a different username.')
-
+                raise ValidationError('Por favor use um nome de usuário diferente.')
 
 class InlineButtonWidget(object):
     def __init__(self, class_=None):
@@ -47,7 +44,6 @@ class InlineButtonWidget(object):
 
         html = '<button %s>%s</button>'
         return Markup(html % (params, escape(field.label.text)))
-
 
 class InlineButton(Field):
     widget = InlineButtonWidget()
@@ -82,7 +78,6 @@ class RegistrationForm(FlaskForm):
         if user is not None:
             raise ValidationError(
                 'Por favor use um endereço de email diferente.')
-
 
 class PostForm(FlaskForm):
     style = {'style': 'width:100%; padding: 8px; resize: none;'}

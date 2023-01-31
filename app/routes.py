@@ -116,6 +116,7 @@ def edit_profile():
 @app.route('/logout')
 def logout():
     logout_user()
+    db.session.commit()
     return redirect(url_for('login'))
 
 @app.route('/follow/<username>', methods=['POST', 'GET'])
