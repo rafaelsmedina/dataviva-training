@@ -27,6 +27,11 @@ um ambiente virtual ("venv") que possibilita a execução desses. Para utilizá-
     <pre><code>flask run</code></pre>
 ## Organização das Pastas
 
+As pastas no projeto foram organizadas da seguinte maneira:
+
+**app**: toda a implementação de código do site
+**app** -> **modules**: arquivos .py auxiliares
+**app** -> **templates**: todos os layouts/templates do site em html + python
 
 ## Desenvolvedores
 
