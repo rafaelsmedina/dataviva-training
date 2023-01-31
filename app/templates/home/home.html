@@ -39,12 +39,14 @@
                 {% include '_post/_post.html' %}
             {% endfor %}
 
-            <div>
-                <h4>Usuários encontrados: </h4>
-            </div>
-            {% for user in search_users %}
-                {% include 'userCard/userCard.html' %}
-            {% endfor %}
+            {% if search_users != undefined %}
+                <div>
+                    <h4>Usuários encontrados: </h4>
+                </div>
+                {% for user in search_users %}
+                    {% include 'userCard/userCard.html' %}
+                {% endfor %}
+            {% endif %}
 
             <nav aria-label="...">
                 <ul class="pager">
