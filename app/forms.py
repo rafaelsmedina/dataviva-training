@@ -7,6 +7,7 @@ from wtforms.widgets.core import html_params
 from flask import request
 from flask_babel import lazy_gettext as _l
 
+
 class EmptyForm(FlaskForm):
     submit = SubmitField('Enviar')
 
@@ -61,6 +62,7 @@ class InlineButton(Field):
         else:
             return u''
 
+
 class RegistrationForm(FlaskForm):
     username = StringField('Nome de usuário', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -90,8 +92,12 @@ class PostForm(FlaskForm):
     submit = SubmitField(
         text, widget=InlineButtonWidget(class_="btn btn-info"))
 
+
 class SearchForm(FlaskForm):
     q = StringField(_l('Pesquisar'), validators=[DataRequired()])
+    text = Markup('<i class="glyphicon glyphicon-search"></i>')
+    submit = SubmitField(
+        text, widget=InlineButtonWidget(class_="btn btn-info"))
 
     def __init__(self, *args, **kwargs):
         if 'formdata' not in kwargs:
