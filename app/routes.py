@@ -1,10 +1,11 @@
 from app import app, db
-from flask import render_template, request, flash, redirect, url_for
+from flask import render_template, request, flash, redirect, url_for, g
 from app.modules.models import User, Post
-from app.forms import LoginForm, EditProfileForm, RegistrationForm, EmptyForm, PostForm
+from app.forms import LoginForm, EditProfileForm, RegistrationForm, EmptyForm, PostForm, SearchForm
 from werkzeug.urls import url_parse
 from flask_login import current_user, login_user, logout_user, login_required
 from datetime import datetime
+from flask_babel import get_locale
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])
@@ -89,13 +90,13 @@ def login():
         
     return render_template('login/login.html', title='Entrar', form=form)
 
-
 @app.before_request
 def before_request():
     if current_user.is_authenticated:
         current_user.last_seen = datetime.utcnow()
         db.session.commit()
-
+        g.search_form = SearchForm()
+    g.locale = str(get_locale())
 
 @app.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
@@ -167,3 +168,16 @@ def explore():
         if posts.has_prev else None
     return render_template("home/home.html", title='Explore', posts=posts.items,
                           next_url=next_url, prev_url=prev_url)
+
+@app.route('/search')
+@login_required
+def search():
+    page = request.args.get('page', 1, type=int)
+    users = User.query.filter(User.username.contains(g.search_form.q.data))
+    posts = Post.query.filter(Post.body.contains(g.search_form.q.data)).order_by(Post.timestamp.desc()).paginate(
+        page=page, per_page=app.config['POSTS_PER_PAGE'], error_out=False)
+    next_url = url_for('explore', page=posts.next_num) \
+        if posts.has_next else None
+    prev_url = url_for('explore', page=posts.prev_num) \
+        if posts.has_prev else None
+    return render_template("home/home.html", title='Explore', posts=posts.items, next_url=next_url, prev_url=prev_url, search_users=users)

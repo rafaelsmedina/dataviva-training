@@ -8,6 +8,9 @@ from logging.handlers import RotatingFileHandler
 from flask_login import LoginManager
 from flask_moment import Moment
 from flask_bootstrap import Bootstrap
+from flask import request
+from flask_babel import Babel
+from elasticsearch import Elasticsearch
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -17,6 +20,14 @@ moment = Moment(app)
 
 login = LoginManager(app)
 login.login_view = 'login'
+
+app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) \
+        if app.config['ELASTICSEARCH_URL'] else None
+
+babel = Babel(app)
+@babel.localeselector
+def get_locale():
+    return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 if not app.debug:
     if not os.path.exists('logs'):
