@@ -1,4 +1,19 @@
-<div style="padding: 5px 10px; border: 1px solid black; border-radius: 8px; margin-bottom: 12px;">
-    <a href="{{ url_for('user', username=user.username) }}" style="margin-bottom: 12px">{{ user.username }}</a>
-    <p style="margin-bottom: 0px;">{{ user.about_me }}</p>
-</div>
+<table class="table table-hover m-0 p-8">
+    <tr valign="top">
+
+        <td width="80px" align="center">
+            <a href="{{ url_for('user', username=user.username) }}">
+                <img src="{{user.avatar(80) }}" class="img-circle img-responsive" style="margin-top: 10px" />
+            </a>
+        </td>
+
+        <td>
+            <h3>
+                <a href="{{ url_for('user', username=user.username) }}">
+                    {{ user.username }}
+                </a>
+            </h3>
+            <p style="margin-bottom: 0px;">{{ user.about_me if user.about_me else '' }}</p>
+        </td>
+    </tr>
+</table>

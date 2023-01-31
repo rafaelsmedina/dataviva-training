@@ -4,7 +4,7 @@ from datetime import date
 from hashlib import md5
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-from app.search import add_to_index, remove_from_index, query_index
+from app.modules.search import add_to_index, remove_from_index, query_index
 
 @login.user_loader
 def load_user(id): 
@@ -84,15 +84,7 @@ class SearchableMixin(object):
 
     @classmethod
     def after_commit(cls, session):
-        for obj in session._changes['add']:
-            if isinstance(obj, SearchableMixin):
-                add_to_index(obj.__tablename__, obj)
-        for obj in session._changes['update']:
-            if isinstance(obj, SearchableMixin):
-                add_to_index(obj.__tablename__, obj)
-        for obj in session._changes['delete']:
-            if isinstance(obj, SearchableMixin):
-                remove_from_index(obj.__tablename__, obj)
+       
         session._changes = None
 
     @classmethod
