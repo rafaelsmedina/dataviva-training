@@ -1,0 +1,6 @@
+{% extends "base/base.html" %}
+
+{% block app_content %}
+    <h1>Erro 500. Atenção: erro interno no banco de dados!</h1>
+    <p><a href="{{ url_for('home') }}">Voltar</a></p>
+{% endblock %}

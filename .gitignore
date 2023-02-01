@@ -1,0 +1,8 @@
+venv/
+migrations/
+__pycache__
+.dotenv
+.flaskenv
+.db
+.log
+logs

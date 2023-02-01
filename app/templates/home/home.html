@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+{% extends "base/base.html" %}
+
+{% block app_content %}
+<div style="display: flex">
+    <div class="row container">
+        <div class="col-sm-6 col-md-3">
+            <div class="thumbnail">
+                <img 
+                    src={{current_user.avatar(60)}} alt="avatar"
+                    class="img-circle"
+                    style="width: 60%"
+                >
+                <div class="caption">
+                    <h4 style="font-weight: bold;">{{ current_user.username }}</h4>
+                    <div style="width: 50%; height: 1px; background-color: black; opacity: 0.5;"></div>
+                    <h5 style="font-weight: bold; opacity: 0.6;">{{ current_user.about_me if current_user.about_me else ''}}</h5>
+                    <h5>
+                        <a href="{{ url_for('user', username=current_user.username) }}" class="btn btn-primary" role="button">Ir para o perfil</a> 
+                    </h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-md-9">
+            {% if form %}
+            <form action="" method="post">
+                {{ form.hidden_tag() }}
+                <p>
+                    {{ form.post(cols=32, rows=4, placeholder="Como você está?") }}<br>
+                    {% for error in form.post.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </p>
+                <p>{{ form.submit() }}</p>
+            </form>
+            {% endif %}
+            {% for post in posts %}
+                {% include '_post/_post.html' %}
+            {% endfor %}
+            
+           
+                {% for user in search_users %}
+                    {% include 'userCard/userCard.html' %}
+                {% endfor %}
+
+            <nav aria-label="...">
+                <ul class="pager">
+                    <li class="previous{% if not prev_url %} disabled{% endif %}">
+                        <a href="{{ prev_url or '#' }}">
+                            <span aria-hidden="true">&larr;</span> Novos posts
+                        </a>
+                    </li>
+                    <li class="next{% if not next_url %} disabled{% endif %}">
+                        <a href="{{ next_url or '#' }}">
+                            Posts antigos <span aria-hidden="true">&rarr;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
